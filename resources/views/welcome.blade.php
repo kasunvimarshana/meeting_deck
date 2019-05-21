@@ -1,14 +1,11 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Laravel</title>
-
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
+        <!-- link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" -->
         <!-- Styles -->
         <style>
             html, body {
@@ -19,81 +16,120 @@
                 height: 100vh;
                 margin: 0;
             }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
         </style>
+        
+        <!-- -------------------------------------------------------------------- -->
+        <link href="{!! asset('node_modules/@fullcalendar/core/main.min.css') !!}" rel='stylesheet' />
+        <link href="{!! asset('node_modules/@fullcalendar/daygrid/main.min.css') !!}" rel='stylesheet' />
+        <link href="{!! asset('node_modules/@fullcalendar/timegrid/main.min.css') !!}" rel='stylesheet' />
+        
+        <script src="{!! asset('node_modules/@fullcalendar/core/main.min.js') !!}"></script>
+        <script src="{!! asset('node_modules/@fullcalendar/daygrid/main.min.js') !!}"></script>
+        <script src="{!! asset('node_modules/@fullcalendar/timegrid/main.min.js') !!}"></script>
+
+        <script>
+            //////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: [ 'dayGrid', 'timeGrid', 'list', 'bootstrap' ],
+                //timeZone: 'UTC',
+                themeSystem: 'bootstrap',
+                defaultView: 'dayGridMonth',
+                //defaultDate: 'YYYY-MM-DD',
+                height: 'parent',
+                editable: false,
+                weekNumbers: true,
+                eventLimit: false,
+                navLinks: true,
+                weekNumbers: true,
+                weekNumbersWithinDays: true,
+                selectable: true,
+                nowIndicator: true,
+                businessHours: false,
+                displayEventTime: false,
+                header: {
+                    left: 'dayGridMonth,timeGridWeek,timeGridDay,addEventButton',//custom1
+                    center: 'title',
+                    right: 'prevYear,prev,next,nextYear'//custom2
+                },
+                footer: {
+                    //left: 'custom1,custom2',
+                    center: '',
+                    right: 'prev,next'
+                },
+                customButtons: {
+                    custom1: {
+                        text: 'custom 1',
+                        click: function() {
+                            alert('clicked custom button 1!');
+                        }
+                    },
+                    custom2: {
+                        text: 'custom 2',
+                        click: function() {
+                            alert('clicked custom button 2!');
+                        }
+                    },
+                    addEventButton: {
+                        text: 'add event...',
+                        click: function() {
+                            var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+                            var date = new Date(dateStr + 'T00:00:00'); // will be in local time
+
+                            if (!isNaN(date.valueOf())) { // valid?
+                                calendar.addEvent({
+                                    title: 'dynamic event',
+                                    start: date,
+                                    allDay: true
+                                });
+                                alert('Great. Now, update your database...');
+                            } else {
+                                alert('Invalid date.');
+                            }
+                        }
+                    }
+                },
+                eventClick: function(arg){
+                    //console.log(arg);
+                },
+                dateClick: function(info) {
+                    //console.log('clicked ' + info.dateStr + ' on resource ' + info.resource.id);
+                },
+                select: function(info) {
+                    //console.log('selected ' + info.startStr + ' to ' + info.endStr + ' on resource ' + info.resource.id);
+                },
+                eventRender: function(info) {
+                    /*var tooltip = new Tooltip(info.el, {
+                        title: info.event.extendedProps.description,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });*/
+                },
+                resources: [],
+                events: [
+                    //{title: 'Conference',start: '2019-05-20',end: '2019-05-22',description: 'description',rendering: 'background',overlap: false},
+                    {title: 'Long Event',start: '2019-05-07',end: '2019-05-11',color: 'purple',description: 'description'},
+                    {groupId: '999',title: 'Repeating Event',start: '2019-05-09T16:10:00',description: 'description'},
+                    {groupId: '999',title: 'Repeating Event',start: '2019-05-16T16:15:00',description: 'description'},
+                    {title: 'Click for Google 1',url: 'http://google.com/',start: '2019-05-28',description: 'description'},
+                    {title: 'Click for Google 2',url: 'http://google.com/',start: '2019-05-28',description: 'description'},
+                    {title: 'Click for Google 3',url: 'http://google.com/',start: '2019-05-28',description: 'description'},
+                    {title: 'Click for Google 4',url: 'http://google.com/',start: '2019-05-28',description: 'description'}
+                ]
+            });
+
+            calendar.render();
+        });
+        </script>
+        <!-- -------------------------------------------------------------------- -->
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+        <div id='calendar-container'>
+            <div id='calendar'></div>
         </div>
     </body>
 </html>
