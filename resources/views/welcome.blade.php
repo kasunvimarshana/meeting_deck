@@ -41,15 +41,20 @@
                 //defaultDate: 'YYYY-MM-DD',
                 height: 'parent',
                 editable: false,
-                weekNumbers: true,
                 eventLimit: false,
                 navLinks: true,
-                weekNumbers: true,
-                weekNumbersWithinDays: true,
+                weekNumbers: false,
+                weekNumbersWithinDays: false,
                 selectable: true,
-                nowIndicator: true,
+                nowIndicator: false,
                 businessHours: false,
                 displayEventTime: false,
+                //resourceLabelText: 'Resource Label',
+                //aspectRatio: 1.5,
+                //groupByResource: false,
+                //groupByDateAndResource: false,
+                //allDaySlot: false,
+                //weekMode: fixed | liquid,
                 header: {
                     left: 'dayGridMonth,timeGridWeek,timeGridDay,addEventButton',//custom1
                     center: 'title',
@@ -109,6 +114,30 @@
                         container: 'body'
                     });*/
                 },
+                resourceRender: function(info) {
+                    var cellText = info.el.querySelector('.fc-cell-text');
+                    var title = info.resource.title;
+                },
+                //////////////////////////////////////////
+                views: {
+                    basic: {
+                        // options apply to basicWeek and basicDay views
+                    },
+                    agenda: {
+                        // options apply to agendaWeek and agendaDay views
+                    },
+                    month: {
+                        // options apply to basicWeek and agendaWeek views
+                        // titleFormat: 'YYYY, MM, DD'
+                    },
+                    week: {
+                        // options apply to basicWeek and agendaWeek views
+                    },
+                    day: {
+                        // options apply to basicDay and agendaDay views
+                    }
+                },
+                //////////////////////////////////////////
                 resources: [],
                 events: [
                     //{title: 'Conference',start: '2019-05-20',end: '2019-05-22',description: 'description',rendering: 'background',overlap: false},
